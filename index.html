@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Amazing Race - Tokyo Takeover</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #000000, #111111 45%, #1a1a1a);
+      color: #ffffff;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 0 0 28px;
+      font-size: 1rem;
+      color: #d6d6d6;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    input[type="password"] {
+      width: 240px;
+      max-width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 14px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      background: #25f4ee;
+      color: #000;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .message {
+      margin-top: 18px;
+      min-height: 24px;
+      font-size: 0.95rem;
+    }
+
+    .error {
+      color: #ff7b7b;
+    }
+
+    .success {
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: 16px;
+      background: rgba(37, 244, 238, 0.1);
+      border: 1px solid rgba(37, 244, 238, 0.35);
+      text-align: left;
+      display: none;
+    }
+
+    .success h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      color: #25f4ee;
+    }
+
+    .clue-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #ffffff;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .card {
+        padding: 28px 20px;
+      }
+
+      .logo-wrap {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo-wrap">
+      <!-- Simple inline TikTok-style logo -->
+      <svg class="logo" viewBox="0 0 64 64" aria-label="TikTok logo" role="img">
+        <path d="M29 10v28.5a8.5 8.5 0 1 1-6-8.14V23.5a15 15 0 1 0 12 14.7V24.1a18.4 18.4 0 0 0 10 3V20.6a11.5 11.5 0 0 1-7.6-10.6Z" fill="#25F4EE"/>
+        <path d="M34 8v28.5a8.5 8.5 0 1 1-6-8.14V21.5a15 15 0 1 0 12 14.7V22.1a18.4 18.4 0 0 0 10 3v-6.5A11.5 11.5 0 0 1 42.4 8Z" fill="#FE2C55" opacity="0.9"/>
+        <path d="M31.5 9v28.5a8.5 8.5 0 1 1-6-8.14V22a15 15 0 1 0 12 14.7V22.6a18.4 18.4 0 0 0 10 3v-6.5A11.5 11.5 0 0 1 39.9 9Z" fill="#ffffff"/>
+      </svg>
+    </div>
+
+    <h1>Welcome to The Amazing Race - Tokyo Takeover</h1>
+    <p class="subtitle">Enter the correct password to reveal your next clue.</p>
+
+    <div class="input-row">
+      <input
+        type="password"
+        id="passwordInput"
+        placeholder="Enter password"
+        autocomplete="off"
+      />
+      <button onclick="checkPassword()">Reveal Clue</button>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div id="clueBox" class="success">
+      <h2>Your Next Clue</h2>
+      <div class="clue-text">
+        It’s time to pay some respect. Make your way to the Onden Shrine and locate Jess.
+        Using the paper given to you previously, you will need to present Jess with 5 perfect
+        Origami Paper Planes to receive your next clue.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const correctPassword = "663";
+
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      const message = document.getElementById("message");
+      const clueBox = document.getElementById("clueBox");
+
+      if (input === correctPassword) {
+        message.textContent = "";
+        message.className = "message";
+        clueBox.style.display = "block";
+      } else {
+        clueBox.style.display = "none";
+        message.textContent = "Incorrect password. Try again.";
+        message.className = "message error";
+      }
+    }
+
+    document.getElementById("passwordInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        checkPassword();
+      }
+    });
+  </script>
+</body>
+</html>
